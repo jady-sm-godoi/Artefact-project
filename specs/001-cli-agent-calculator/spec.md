@@ -108,14 +108,20 @@ responds correctly.
 
 ### Edge Cases
 
-- What happens when the user enters an invalid math expression (e.g., mismatched
-  parentheses, undefined symbols)?
-- What happens when the calculator tool encounters an error or cannot evaluate
-  the expression?
-- What happens when the user asks a question that is neither factual nor
-  computational (e.g., "Tell me a joke", "How do I feel?")?
-- What happens when the user enters empty input or only whitespace?
-- What happens when the user asks the same question multiple times?
+- **Invalid math expression**: Agent displays a clear error message identifying
+  the issue (e.g., mismatched parentheses, undefined variable) and prompts for
+  a corrected expression.
+- **Calculator tool failure**: Agent reports that the calculation could not be
+  completed and suggests rephrasing or simplifying the expression.
+- **AI knowledge source unavailable**: Agent warns the user that the knowledge
+  component is offline, degrades gracefully to calculator-only mode, and
+  continues accepting calculation queries.
+- **Non-factual, non-computational query**: Agent responds conversationally
+  (e.g., tells a joke, acknowledges the query) without attempting calculation
+  or knowledge lookup.
+- **Empty input or whitespace**: Agent ignores and re-prompts for valid input.
+- **Repeated identical query**: Agent reuses the previous response without
+  recomputing, or asks if the user needs a different answer.
 
 ## Requirements *(mandatory)*
 
@@ -140,6 +146,10 @@ responds correctly.
   factual question with confidence.
 - **FR-010**: System MUST exit cleanly when the user sends an exit command
   (e.g., "exit", "quit").
+- **FR-011**: System MUST degrade gracefully when the AI knowledge source is
+  unavailable: warn the user and continue in calculator-only mode.
+- **FR-012**: System MUST support an optional verbose mode (`--verbose`) that
+  displays tool invocations and reasoning steps to the user.
 
 ### Key Entities
 
@@ -169,7 +179,22 @@ responds correctly.
   expressions (simplification, factoring, differentiation, integration).
 - The intended users are developers and technical users comfortable with a
   terminal interface.
-- The system runs on a single machine with internet access for the AI
-  knowledge component.
+- The system runs on a single machine. Internet access is required for the AI
+  knowledge component, but the agent degrades gracefully to calculator-only
+  mode when offline.
 - No user authentication or multi-user support is needed for v1.
 - No persistent storage of conversation history is required across sessions.
+
+## Clarifications
+
+### Session 2026-05-26
+
+- Q: Comportamento quando fonte de conhecimento IA está indisponível →
+  A: Degradação graciosa — avisa o usuário que o modo conhecimento está
+  offline, mas continua funcionando para cálculos.
+- Q: Modo verbose / debug de raciocínio →
+  A: Verbose opcional via flag `--verbose` que mostra tool invocations
+  e raciocínio.
+- Q: Indicador de processamento / prompt →
+  A: Prompt simples ">" com indicador "Processing..." durante o
+  processamento.
