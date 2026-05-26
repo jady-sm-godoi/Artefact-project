@@ -1,6 +1,5 @@
 import argparse
 
-from agno.models.message import Message
 from agno.run.agent import RunOutput
 from dotenv import load_dotenv
 
@@ -54,12 +53,14 @@ def main(argv: list[str] | None = None) -> None:
     )
     args = parser.parse_args(argv)
 
-    agent = create_agent(verbose=args.verbose)
+    agent = create_agent(
+        verbose=args.verbose,
+        session_id="default-session",
+    )
 
     print("Artefact Agent — type 'exit' or 'quit' to stop.")
     print()
 
-    messages: list[Message] = []
     calculator_only = False
     last_input: str | None = None
     last_response: str | None = None
@@ -92,7 +93,7 @@ def main(argv: list[str] | None = None) -> None:
                 print(f'[Tool: calculator] "{user_input}" → {result}')
             print(result)
         else:
-            response, messages = run_with_context(agent, messages, user_input)
+            response = run_with_context(agent, user_input)
             content = _get_content(response)
 
             if _is_ai_unavailable(response):
@@ -113,13 +114,19 @@ def main(argv: list[str] | None = None) -> None:
                 if args.verbose:
                     if isinstance(response, RunOutput):
                         _display_tool_calls(response)
+                        last_input = user_input
+                        last_response = content
+                        print(content)
                     else:
                         print(
                             f'[Tool: calculator] "{user_input}" → {response}'
                         )
-                last_input = user_input
-                last_response = content
-                print(content)
+                        last_input = user_input
+                        last_response = str(response)
+                else:
+                    last_input = user_input
+                    last_response = content
+                    print(content)
 
         print()
 

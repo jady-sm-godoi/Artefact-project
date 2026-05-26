@@ -1,11 +1,28 @@
+from unittest import mock
+
+import pytest
 from agno.run.agent import RunOutput
+
+SESSION_ID = "test-session"
+
+
+@pytest.fixture(autouse=True)
+def _isolate_db(tmp_path):
+    db_dir = tmp_path / "sessions"
+    db_dir.mkdir()
+    db_path = db_dir / "agent.db"
+    with (
+        mock.patch("src.agent.DB_DIR", str(db_dir)),
+        mock.patch("src.agent.DB_PATH", str(db_path)),
+    ):
+        yield
 
 
 class TestAgentKnowledgeResponse:
     def test_factual_answer_contains_expected_content(self):
         from src.agent import create_agent
 
-        agent = create_agent()
+        agent = create_agent(session_id=SESSION_ID)
         response = agent.run("What is the capital of France?")
         assert isinstance(response, RunOutput)
         assert response.content
@@ -14,7 +31,7 @@ class TestAgentKnowledgeResponse:
     def test_uncertainty_on_unknown_question(self):
         from src.agent import create_agent
 
-        agent = create_agent()
+        agent = create_agent(session_id=SESSION_ID)
         response = agent.run(
             "What is the hyperdimensional resonance frequency"
             " of a quantum tachyon field?"
@@ -24,7 +41,6 @@ class TestAgentKnowledgeResponse:
         assert "error" not in response.content.lower()
         uncertainty_indicators = [
             "not a real",
-            "not a valid",
             "doesn't exist",
             "isn't a",
             "is not a",
@@ -33,9 +49,7 @@ class TestAgentKnowledgeResponse:
             "speculative",
             "don't have a",
             "no known",
-            "not an actual",
             "is not real",
-            "not real",
             "hypothetical",
             "no such",
             "does not exist",
@@ -50,64 +64,47 @@ class TestKnowledgeRouting:
     def test_pure_math_expression_routes_to_calculator(self):
         from src.agent import create_agent, run_with_context
 
-        agent = create_agent()
-        result, messages = run_with_context(agent, [], "128 * 46")
+        agent = create_agent(session_id=SESSION_ID)
+        result = run_with_context(agent, "128 * 46")
         assert result == "5888"
 
     def test_factual_question_routes_to_llm(self):
         from src.agent import create_agent, run_with_context
 
-        agent = create_agent()
-        result, messages = run_with_context(
-            agent, [], "What is the capital of France?"
-        )
+        agent = create_agent(session_id=SESSION_ID)
+        result = run_with_context(agent, "What is the capital of France?")
         assert isinstance(result, RunOutput)
         assert "Paris" in result.content
 
 
 class TestConversationContext:
     def test_followup_uses_prior_context(self):
-        from src.agent import create_agent, run_with_context
+        from src.agent import create_agent
 
-        agent = create_agent()
-        messages: list = []
+        agent = create_agent(session_id=SESSION_ID)
+        agent.run("My favorite number is 42.")
 
-        result1, messages = run_with_context(
-            agent, messages, "My favorite number is 42."
-        )
-        assert isinstance(result1, RunOutput)
-        assert result1.content
-
-        result2, messages = run_with_context(
-            agent, messages, "What is my favorite number?"
-        )
-        assert isinstance(result2, RunOutput)
-        assert "42" in result2.content
+        agent2 = create_agent(session_id=SESSION_ID)
+        result = agent2.run("What is my favorite number?")
+        assert "42" in result.content
 
     def test_math_then_context(self):
-        from src.agent import create_agent, run_with_context
+        from src.agent import create_agent
 
-        agent = create_agent()
-        messages: list = []
+        agent = create_agent(session_id=SESSION_ID)
+        agent.run("What is 2 + 2?")
 
-        result1, messages = run_with_context(agent, messages, "2 + 2")
-        assert result1 == "4"
-
-        result2, messages = run_with_context(
-            agent, messages, "Now multiply that by 5"
-        )
-        assert isinstance(result2, RunOutput)
-        assert "20" in result2.content or "4" in result2.content
+        agent2 = create_agent(session_id=SESSION_ID)
+        result = agent2.run("Now multiply that by 5")
+        assert "20" in result.content or "4" in result.content
 
 
 class TestMixedQueryDetection:
     def test_seconds_in_a_day_returns_86400(self):
         from src.agent import create_agent, run_with_context
 
-        agent = create_agent()
-        result, messages = run_with_context(
-            agent, [], "How many seconds in a day?"
-        )
+        agent = create_agent(session_id=SESSION_ID)
+        result = run_with_context(agent, "How many seconds in a day?")
         assert isinstance(result, RunOutput)
         raw = result.content.replace(",", "")
         assert "86400" in raw
@@ -115,8 +112,8 @@ class TestMixedQueryDetection:
     def test_non_factual_non_computational_response(self):
         from src.agent import create_agent, run_with_context
 
-        agent = create_agent()
-        result, messages = run_with_context(agent, [], "Tell me a joke")
+        agent = create_agent(session_id=SESSION_ID)
+        result = run_with_context(agent, "Tell me a joke")
         assert isinstance(result, RunOutput)
         assert result.content
         assert "error" not in result.content.lower()

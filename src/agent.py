@@ -1,11 +1,10 @@
 from __future__ import annotations
 
+import os
 import re
 
 from agno.agent import Agent
-from agno.models.message import Message
-
-# from agno.models.groq import Groq
+from agno.db.sqlite import SqliteDb
 from agno.models.openai import OpenAIChat
 from agno.run.agent import RunOutput
 from agno.tools import Function
@@ -88,6 +87,9 @@ _MATH_WORDS = {
     "delta",
 }
 
+DB_DIR = "sessions"
+DB_PATH = os.path.join(DB_DIR, "agent.db")
+
 
 def _is_pure_math(expression: str) -> bool:
     stripped = expression.strip()
@@ -102,10 +104,16 @@ def _is_pure_math(expression: str) -> bool:
 def create_agent(
     verbose: bool = False,
     model=None,
+    session_id: str | None = None,
 ) -> Agent:
     if model is None:
-        # model = Groq(id="llama-3.3-70b-versatile")
         model = OpenAIChat(id="gpt-4o-mini")
+
+    os.makedirs(DB_DIR, exist_ok=True)
+    db = SqliteDb(db_file=DB_PATH)
+
+    if session_id is None:
+        session_id = "default-session"
 
     tools: list[Function] = [calculator_tool]
 
@@ -148,6 +156,10 @@ def create_agent(
 
     return Agent(
         model=model,
+        db=db,
+        session_id=session_id,
+        add_history_to_context=True,
+        num_history_runs=5,
         tools=tools,
         description=(
             "A CLI agent that answers questions and performs calculations."
@@ -160,21 +172,15 @@ def create_agent(
 
 def run_with_context(
     agent: Agent,
-    messages: list[Message],
     user_input: str,
-) -> tuple[RunOutput | str, list[Message]]:
+) -> RunOutput | str:
     if _is_pure_math(user_input):
-        result = evaluate(user_input)
-        messages.append(Message(role="user", content=user_input))
-        messages.append(Message(role="assistant", content=str(result)))
-        return result, messages
+        return evaluate(user_input)
 
-    user_msg = Message(role="user", content=user_input)
-    messages.append(user_msg)
-
-    response = agent.run(messages)
-
+    response = agent.run(user_input)
     if response.messages is not None:
-        messages.extend(response.messages[-1:])
-
-    return response, messages
+        return response
+    content = (
+        response.content if hasattr(response, "content") else str(response)
+    )
+    return content

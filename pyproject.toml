@@ -8,6 +8,7 @@ dependencies = [
     "agno>=2.6.9",
     "groq>=1.2.0",
     "openai>=2.38.0",
+    "sqlalchemy>=2.0.50",
     "sympy>=1.14.0",
 ]
 
