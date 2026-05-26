@@ -109,20 +109,24 @@ def create_agent(
     instructions = [
         "You are a helpful CLI assistant that answers user questions.",
         (
-            "When the user asks a mathematical question or calculation,"
-            " use the calculator tool to compute the exact result."
-        ),
-        (
             "When the user asks a factual or knowledge-based question,"
             " answer from your own knowledge without using any tool."
+        ),
+        (
+            "When the user asks a question that involves any numerical"
+            " calculation, arithmetic, or mathematical concept (e.g.,"
+            " 'how many seconds in a day', 'volume of a sphere',"
+            " 'distance traveled at 60 mph for 2 hours'), you MUST use"
+            " the calculator tool to compute the result."
         ),
         "Be concise and direct in your responses.",
         "If you are unsure about an answer, communicate your uncertainty.",
         (
             "IMPORTANT: Only use the calculator tool when the user input"
-            " is a clear mathematical expression or calculation request."
-            " Do NOT use it for conceptual questions, definitions,"
-            " or explanations."
+            " is a clear mathematical expression, calculation request,"
+            " or involves numerical computation. Do NOT use it for"
+            " conceptual questions, definitions, explanations, jokes,"
+            " or opinions."
         ),
     ]
     if verbose:

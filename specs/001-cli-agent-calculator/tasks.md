@@ -184,17 +184,17 @@ calculator tool correctly
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T030 [P] [US4] Write unit test for mixed query detection in
+- [X] T030 [P] [US4] Write unit test for mixed query detection in
       `tests/unit/test_agent.py` — "How many seconds in a day?" should
       trigger calculator
-- [ ] T031 [P] [US4] Write integration test for calculation-via-text
+- [X] T031 [P] [US4] Write integration test for calculation-via-text
       queries in `tests/integration/test_cli.py`
 
 ### Implementation for User Story 4
 
-- [ ] T032 [US4] Implement mixed/ambiguous query routing in `src/agent.py`
+- [X] T032 [US4] Implement mixed/ambiguous query routing in `src/agent.py`
       — detect implicit calculations in natural language
-- [ ] T033 [US4] Implement non-factual non-computational response in
+- [X] T033 [US4] Implement non-factual non-computational response in
       `src/cli.py` — handle jokes, opinions, etc.
 
 **Checkpoint**: User Story 4 functional — agent handles edge cases

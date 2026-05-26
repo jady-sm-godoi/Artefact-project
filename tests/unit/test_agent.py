@@ -98,3 +98,25 @@ class TestConversationContext:
         )
         assert isinstance(result2, RunOutput)
         assert "20" in result2.content or "4" in result2.content
+
+
+class TestMixedQueryDetection:
+    def test_seconds_in_a_day_returns_86400(self):
+        from src.agent import create_agent, run_with_context
+
+        agent = create_agent()
+        result, messages = run_with_context(
+            agent, [], "How many seconds in a day?"
+        )
+        assert isinstance(result, RunOutput)
+        raw = result.content.replace(",", "")
+        assert "86400" in raw
+
+    def test_non_factual_non_computational_response(self):
+        from src.agent import create_agent, run_with_context
+
+        agent = create_agent()
+        result, messages = run_with_context(agent, [], "Tell me a joke")
+        assert isinstance(result, RunOutput)
+        assert result.content
+        assert "error" not in result.content.lower()

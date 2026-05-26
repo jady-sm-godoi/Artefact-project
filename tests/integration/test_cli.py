@@ -86,3 +86,37 @@ class TestFollowUpFlow:
         output = stdout.getvalue()
         assert "42" in output
         assert "Processing..." in output
+
+
+class TestMixedInput:
+    def test_seconds_in_day_via_cli(self):
+        from io import StringIO
+
+        from src.cli import main
+
+        inputs = "How many seconds in a day?\nexit\n"
+        with (
+            mock.patch("sys.stdin", StringIO(inputs)),
+            mock.patch("sys.stdout", new_callable=StringIO) as stdout,
+        ):
+            main(argv=[])
+
+        output = stdout.getvalue()
+        raw = output.replace(",", "")
+        assert "86400" in raw
+
+    def test_joke_via_cli(self):
+        from io import StringIO
+
+        from src.cli import main
+
+        inputs = "Tell me a joke\nexit\n"
+        with (
+            mock.patch("sys.stdin", StringIO(inputs)),
+            mock.patch("sys.stdout", new_callable=StringIO) as stdout,
+        ):
+            main(argv=[])
+
+        output = stdout.getvalue()
+        assert len(output) > 100
+        assert "Processing..." in output
