@@ -3,8 +3,10 @@ from __future__ import annotations
 import re
 
 from agno.agent import Agent
-from agno.models.groq import Groq
 from agno.models.message import Message
+
+# from agno.models.groq import Groq
+from agno.models.openai import OpenAIChat
 from agno.run.agent import RunOutput
 from agno.tools import Function
 from dotenv import load_dotenv
@@ -102,7 +104,8 @@ def create_agent(
     model=None,
 ) -> Agent:
     if model is None:
-        model = Groq(id="llama-3.3-70b-versatile")
+        # model = Groq(id="llama-3.3-70b-versatile")
+        model = OpenAIChat(id="gpt-4o-mini")
 
     tools: list[Function] = [calculator_tool]
 
@@ -122,11 +125,22 @@ def create_agent(
         "Be concise and direct in your responses.",
         "If you are unsure about an answer, communicate your uncertainty.",
         (
+            "Do NOT use LaTeX math formatting (like \\(...\\) or \\[...\\])."
+            " Always output math results in plain text — e.g., '1/2' instead"
+            " of '\\frac{1}{2}', 'sqrt(2)' instead of '\\sqrt{2}'."
+        ),
+        (
             "IMPORTANT: Only use the calculator tool when the user input"
             " is a clear mathematical expression, calculation request,"
             " or involves numerical computation. Do NOT use it for"
             " conceptual questions, definitions, explanations, jokes,"
             " or opinions."
+        ),
+        (
+            "IMPORTANT: When calling the calculator tool for trigonometric"
+            " functions, always use radians — not degrees."
+            " For example, use sin(pi/6) NOT sin(30 degrees)."
+            " Convert degrees to radians yourself before calling the tool."
         ),
     ]
     if verbose:
@@ -159,6 +173,8 @@ def run_with_context(
     messages.append(user_msg)
 
     response = agent.run(messages)
-    messages.extend(response.messages[-1:])
+
+    if response.messages is not None:
+        messages.extend(response.messages[-1:])
 
     return response, messages

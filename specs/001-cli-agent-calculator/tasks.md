@@ -205,18 +205,18 @@ calculator tool correctly
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T034 [P] Implement empty input handling in `src/cli.py` — ignore and
+- [X] T034 [P] Implement empty input handling in `src/cli.py` — ignore and
       re-prompt
-- [ ] T035 [P] Implement exit command handling in `src/cli.py` — "exit",
+- [X] T035 [P] Implement exit command handling in `src/cli.py` — "exit",
       "quit" cleanly terminate session
-- [ ] T036 [P] Implement graceful degradation display in `src/cli.py` —
+- [X] T036 [P] Implement graceful degradation display in `src/cli.py` —
       show AI offline warning, allow calculator-only usage
-- [ ] T037 [P] Implement verbose mode display formatting in `src/cli.py` —
+- [X] T037 [P] Implement verbose mode display formatting in `src/cli.py` —
       show `[Tool: calculator]` and tool input/output
-- [ ] T038 [P] Implement repeated query response in `src/agent.py` — reuse
+- [X] T038 [P] Implement repeated query response in `src/agent.py` — reuse
       previous answer or ask for clarification
-- [ ] T039 Run `ruff check .` and fix all linting issues
-- [ ] T040 Run `uv sync` and verify all imports work
+- [X] T039 Run `ruff check .` and fix all linting issues
+- [X] T040 Run `uv sync` and verify all imports work
 
 ---
 
