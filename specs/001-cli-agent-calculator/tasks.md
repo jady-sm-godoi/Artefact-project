@@ -111,31 +111,31 @@ mixed expression) and verify mathematically exact answers
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T016 [P] [US2] Write unit test for arithmetic operations in
+- [X] T016 [P] [US2] Write unit test for arithmetic operations in
       `tests/unit/test_calculator.py` — test `+`, `-`, `*`, `/`
-- [ ] T017 [P] [US2] Write unit test for symbolic math in
+- [X] T017 [P] [US2] Write unit test for symbolic math in
       `tests/unit/test_calculator.py` — test `simplify`, `factor`,
       `diff`, `integrate`
-- [ ] T018 [P] [US2] Write unit test for calculator error handling in
+- [X] T018 [P] [US2] Write unit test for calculator error handling in
       `tests/unit/test_calculator.py` — invalid syntax, undefined symbols
-- [ ] T019 [P] [US2] Write integration test for calculation query flow in
+- [X] T019 [P] [US2] Write integration test for calculation query flow in
       `tests/integration/test_cli.py` — user types expression, gets exact
       result
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Implement `sympify()` expression parsing in
+- [X] T020 [P] [US2] Implement `sympify()` expression parsing in
       `src/tools/calculator.py` — handle string-to-expression conversion
-- [ ] T021 [P] [US2] Implement basic arithmetic operations in
+- [X] T021 [P] [US2] Implement basic arithmetic operations in
       `src/tools/calculator.py` — evaluate `+`, `-`, `*`, `/`, `**`
-- [ ] T022 [P] [US2] Implement symbolic math operations in
+- [X] T022 [P] [US2] Implement symbolic math operations in
       `src/tools/calculator.py` — simplify, factor, diff, integrate
-- [ ] T023 [US2] Implement calculator tool error handling in
+- [X] T023 [US2] Implement calculator tool error handling in
       `src/tools/calculator.py` — catch SymPy exceptions, return
       human-readable messages
-- [ ] T024 [US2] Register calculator tool with Agno agent in `src/agent.py`
+- [X] T024 [US2] Register calculator tool with Agno agent in `src/agent.py`
       — add as a FunctionTool
-- [ ] T025 [US2] Implement calculation detection and routing in
+- [X] T025 [US2] Implement calculation detection and routing in
       `src/agent.py` — agent detects math query and invokes calculator
       tool
 
