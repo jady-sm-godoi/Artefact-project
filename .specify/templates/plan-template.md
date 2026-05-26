@@ -40,7 +40,17 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **I. Code Craftsmanship**: Does the feature follow 79-char line limit,
+      Ruff lint/format, import ordering, and HTTPStatus conventions?
+- [ ] **II. Conventional Commits**: Will commits use `feat:`, `fix:`, `chore:`,
+      `refact:`, or `docs:` with subjects ≤50 chars?
+- [ ] **III. Test-First (NON-NEGOTIABLE)**: Are tests written before
+      implementation? Red-Green-Refactor cycle defined?
+- [ ] **IV. Git Workflow**: Is the feature on a proper branch off `dev`?
+- [ ] **V. Architecture & Stack**: Does the implementation use Python 3.12,
+      uv, Agno, OpenAI, SymPy, SQLite? If not, is deviation justified?
+- [ ] **Complexity justified**: Are all architectural choices simpler than
+      the alternatives they replace?
 
 ## Project Structure
 
