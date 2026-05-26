@@ -30,15 +30,15 @@ implementation and testing of each story.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure: `src/`, `src/tools/`, `tests/unit/`,
+- [X] T001 Create project structure: `src/`, `src/tools/`, `tests/unit/`,
       `tests/integration/` directories
-- [ ] T002 Initialize Python project with `uv` — ensure `pyproject.toml` has
+- [X] T002 Initialize Python project with `uv` — ensure `pyproject.toml` has
       agno, openai, sympy dependencies
-- [ ] T003 [P] Configure Ruff linting and formatting in `pyproject.toml`
+- [X] T003 [P] Configure Ruff linting and formatting in `pyproject.toml`
       (79-char line length, trailing newline, import ordering)
-- [ ] T004 [P] Create `src/__init__.py` and `src/tools/__init__.py` package
+- [X] T004 [P] Create `src/__init__.py` and `src/tools/__init__.py` package
       files
-- [ ] T005 [P] Create `tests/__init__.py`, `tests/unit/__init__.py`,
+- [X] T005 [P] Create `tests/__init__.py`, `tests/unit/__init__.py`,
       `tests/integration/__init__.py` package files
 
 **Checkpoint**: Setup complete — foundational phase can begin

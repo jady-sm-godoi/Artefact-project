@@ -10,6 +10,19 @@ dependencies = [
     "sympy>=1.14.0",
 ]
 
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+order-by-type = false
+
 [dependency-groups]
 dev = [
     "ruff>=0.15.14",
