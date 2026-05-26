@@ -79,20 +79,20 @@ answer
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T011 [P] [US1] Write unit test for agent knowledge response in
+- [X] T011 [P] [US1] Write unit test for agent knowledge response in
       `tests/unit/test_agent.py` — verify agent returns answer for factual
       questions
-- [ ] T012 [P] [US1] Write unit test for agent uncertainty in
+- [X] T012 [P] [US1] Write unit test for agent uncertainty in
       `tests/unit/test_agent.py` — verify agent communicates uncertainty
       when answer is not known
-- [ ] T013 [P] [US1] Write integration test for full factual Q&A session
+- [X] T013 [P] [US1] Write integration test for full factual Q&A session
       in `tests/integration/test_cli.py`
 
 ### Implementation for User Story 1
 
-- [ ] T014 [US1] Implement knowledge-only query routing in `src/agent.py` —
+- [X] T014 [US1] Implement knowledge-only query routing in `src/agent.py` —
       route factual questions to LLM without tool invocation
-- [ ] T015 [US1] Wire agent knowledge response to CLI output in `src/cli.py`
+- [X] T015 [US1] Wire agent knowledge response to CLI output in `src/cli.py`
       — display answer text to user
 
 **Checkpoint**: User Story 1 functional — agent answers factual questions

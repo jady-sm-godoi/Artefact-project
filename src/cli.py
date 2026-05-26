@@ -3,7 +3,7 @@ import argparse
 from agno.run.agent import RunOutput
 from dotenv import load_dotenv
 
-from src.agent import create_agent
+from src.agent import create_agent, route_query
 from src.tools.calculator import evaluate
 
 AI_UNAVAILABLE_TOKENS = (
@@ -25,7 +25,7 @@ def _get_content(response: RunOutput | str) -> str:
     return response.content if hasattr(response, "content") else str(response)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     load_dotenv()
     parser = argparse.ArgumentParser(
         description="CLI Question-Answer Agent with Calculator"
@@ -35,7 +35,7 @@ def main() -> None:
         action="store_true",
         help="Show tool invocations and reasoning steps",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     agent = create_agent(verbose=args.verbose)
 
@@ -63,7 +63,7 @@ def main() -> None:
             result = evaluate(user_input)
             print(result)
         else:
-            response = agent.run(user_input)
+            response = route_query(agent, user_input)
             content = _get_content(response)
 
             if _is_ai_unavailable(content):
