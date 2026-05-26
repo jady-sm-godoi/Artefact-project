@@ -155,17 +155,17 @@ previous answer (e.g., "What is 2 + 2?" then "Now multiply that by 5")
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T026 [P] [US3] Write unit test for conversation context in
+- [X] T026 [P] [US3] Write unit test for conversation context in
       `tests/unit/test_agent.py` — verify follow-up queries use prior
       context
-- [ ] T027 [P] [US3] Write integration test for follow-up query flow in
+- [X] T027 [P] [US3] Write integration test for follow-up query flow in
       `tests/integration/test_cli.py`
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Enable Agno conversation memory in `src/agent.py` —
+- [X] T028 [US3] Enable Agno conversation memory in `src/agent.py` —
       configure session-based message history
-- [ ] T029 [US3] Implement follow-up context handling in `src/agent.py` —
+- [X] T029 [US3] Implement follow-up context handling in `src/agent.py` —
       pass conversation history to LLM for context-aware responses
 
 **Checkpoint**: User Story 3 functional — agent maintains session context

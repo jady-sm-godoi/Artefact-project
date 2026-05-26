@@ -66,3 +66,23 @@ class TestCalculationQueryFlow:
 
         output = stdout.getvalue()
         assert "Error" in output
+
+
+class TestFollowUpFlow:
+    def test_context_followup(self):
+        from io import StringIO
+
+        from src.cli import main
+
+        inputs = (
+            "My favorite number is 42.\nWhat is my favorite number?\nexit\n"
+        )
+        with (
+            mock.patch("sys.stdin", StringIO(inputs)),
+            mock.patch("sys.stdout", new_callable=StringIO) as stdout,
+        ):
+            main(argv=[])
+
+        output = stdout.getvalue()
+        assert "42" in output
+        assert "Processing..." in output

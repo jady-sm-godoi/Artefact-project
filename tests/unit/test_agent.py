@@ -48,16 +48,53 @@ class TestAgentKnowledgeResponse:
 
 class TestKnowledgeRouting:
     def test_pure_math_expression_routes_to_calculator(self):
-        from src.agent import create_agent, route_query
+        from src.agent import create_agent, run_with_context
 
         agent = create_agent()
-        result = route_query(agent, "128 * 46")
+        result, messages = run_with_context(agent, [], "128 * 46")
         assert result == "5888"
 
     def test_factual_question_routes_to_llm(self):
-        from src.agent import create_agent, route_query
+        from src.agent import create_agent, run_with_context
 
         agent = create_agent()
-        result = route_query(agent, "What is the capital of France?")
+        result, messages = run_with_context(
+            agent, [], "What is the capital of France?"
+        )
         assert isinstance(result, RunOutput)
         assert "Paris" in result.content
+
+
+class TestConversationContext:
+    def test_followup_uses_prior_context(self):
+        from src.agent import create_agent, run_with_context
+
+        agent = create_agent()
+        messages: list = []
+
+        result1, messages = run_with_context(
+            agent, messages, "My favorite number is 42."
+        )
+        assert isinstance(result1, RunOutput)
+        assert result1.content
+
+        result2, messages = run_with_context(
+            agent, messages, "What is my favorite number?"
+        )
+        assert isinstance(result2, RunOutput)
+        assert "42" in result2.content
+
+    def test_math_then_context(self):
+        from src.agent import create_agent, run_with_context
+
+        agent = create_agent()
+        messages: list = []
+
+        result1, messages = run_with_context(agent, messages, "2 + 2")
+        assert result1 == "4"
+
+        result2, messages = run_with_context(
+            agent, messages, "Now multiply that by 5"
+        )
+        assert isinstance(result2, RunOutput)
+        assert "20" in result2.content or "4" in result2.content

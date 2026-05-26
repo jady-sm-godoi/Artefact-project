@@ -1,9 +1,10 @@
 import argparse
 
+from agno.models.message import Message
 from agno.run.agent import RunOutput
 from dotenv import load_dotenv
 
-from src.agent import create_agent, route_query
+from src.agent import create_agent, run_with_context
 from src.tools.calculator import evaluate
 
 AI_UNAVAILABLE_TOKENS = (
@@ -42,6 +43,7 @@ def main(argv: list[str] | None = None) -> None:
     print("Artefact Agent — type 'exit' or 'quit' to stop.")
     print()
 
+    messages: list[Message] = []
     calculator_only = False
 
     while True:
@@ -63,7 +65,7 @@ def main(argv: list[str] | None = None) -> None:
             result = evaluate(user_input)
             print(result)
         else:
-            response = route_query(agent, user_input)
+            response, messages = run_with_context(agent, messages, user_input)
             content = _get_content(response)
 
             if _is_ai_unavailable(content):
