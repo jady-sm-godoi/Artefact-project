@@ -22,6 +22,9 @@
 - No pre-commit hooks, task runner, or dev scripts.
 
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+Current plan: specs/001-cli-agent-calculator/plan.md
+Spec: specs/001-cli-agent-calculator/spec.md
+Data model: specs/001-cli-agent-calculator/data-model.md
+Quickstart: specs/001-cli-agent-calculator/quickstart.md
+Contracts: specs/001-cli-agent-calculator/contracts/
 <!-- SPECKIT END -->
