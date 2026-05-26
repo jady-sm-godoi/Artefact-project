@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "agno>=2.6.9",
+    "groq>=1.2.0",
     "openai>=2.38.0",
     "sympy>=1.14.0",
 ]

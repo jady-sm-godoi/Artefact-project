@@ -52,15 +52,15 @@ can be implemented
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Create Agno agent base with OpenAI integration in
+- [X] T006 Create Agno agent base with OpenAI integration in
       `src/agent.py` — configure API key, model, and tool registry
-- [ ] T007 [P] Create calculator tool function using SymPy `sympify()` in
+- [X] T007 [P] Create calculator tool function using SymPy `sympify()` in
       `src/tools/calculator.py` — parse expression, return string result
-- [ ] T008 [P] Create CLI REPL loop in `src/cli.py` — read-eval-print loop
+- [X] T008 [P] Create CLI REPL loop in `src/cli.py` — read-eval-print loop
       with `>` prompt and `Processing...` indicator
-- [ ] T009 Implement graceful degradation: detect AI API unavailability,
+- [X] T009 Implement graceful degradation: detect AI API unavailability,
       warn user, switch to calculator-only mode
-- [ ] T010 Implement `--verbose` flag parsing in `src/cli.py` — show tool
+- [X] T010 Implement `--verbose` flag parsing in `src/cli.py` — show tool
       invocations and reasoning steps when enabled
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
