@@ -90,14 +90,14 @@ JSON.
 
 ### Tests for User Story 2
 
-- [ ] T011 [P] [US2] Test GET /health returns `{"status": "ok",
+- [X] T011 [P] [US2] Test GET /health returns `{"status": "ok",
       "mode": "full"}` in `tests/api/test_health.py`
-- [ ] T012 [P] [US2] Test GET /health returns degraded status when AI
+- [X] T012 [P] [US2] Test GET /health returns degraded status when AI
       unavailable in `tests/api/test_health.py`
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] Implement GET /health route in `src/api/routes.py`:
+- [X] T013 [US2] Implement GET /health route in `src/api/routes.py`:
       check agent availability, return HealthResponse
 
 **Checkpoint**: US1 and US2 both independently functional

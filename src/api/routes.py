@@ -41,3 +41,11 @@ async def handle_query(req: QueryRequest, request: Request):
     if isinstance(result, str):
         return QueryResponse(response=result)
     return QueryResponse(response=result.content)
+
+
+@router.get("/health")
+async def handle_health(request: Request):
+    ai_ok = getattr(request.app.state, "ai_available", False)
+    if ai_ok:
+        return HealthResponse(status="ok", mode="full")
+    return HealthResponse(status="degraded", mode="calculator-only")
