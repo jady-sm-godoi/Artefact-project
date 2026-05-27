@@ -27,6 +27,11 @@ select = ["E", "F", "I", "W"]
 known-first-party = ["src"]
 order-by-type = false
 
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::RuntimeWarning:hpack.*",
+]
+
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
