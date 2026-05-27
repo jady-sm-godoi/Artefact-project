@@ -1,3 +1,7 @@
+## Communication
+
+- **Mode**: caveman (sempre ativo). Falar de forma ultra-Concisa, sem artigos/filler/hedging. Técnico e direto.
+
 ## Toolchain
 
 - **Package manager**: `uv` (not pip/poetry). Install deps: `uv sync`. Add dep: `uv add <pkg>`.
