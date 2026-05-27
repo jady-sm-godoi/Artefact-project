@@ -63,19 +63,19 @@ via HTTP POST and verify each returns correct response.
 > Write these tests FIRST, ensure they FAIL before implementation
 > (Red-Green-Refactor per Constitution III).
 
-- [ ] T006 [P] [US1] Test POST /query with factual question returns 200 +
+- [X] T006 [P] [US1] Test POST /query with factual question returns 200 +
       correct response in `tests/api/test_query.py`
-- [ ] T007 [P] [US1] Test POST /query with calculation "128 * 46" returns
+- [X] T007 [P] [US1] Test POST /query with calculation "128 * 46" returns
       "5888" in `tests/api/test_query.py`
-- [ ] T008 [US1] Test POST /query with empty query returns 422 validation
+- [X] T008 [US1] Test POST /query with empty query returns 422 validation
       error in `tests/api/test_query.py`
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement POST /query route in `src/api/routes.py`:
+- [X] T009 [US1] Implement POST /query route in `src/api/routes.py`:
       validate QueryRequest, call agent from `src.agent`, return
       QueryResponse
-- [ ] T010 [US1] Wire route into FastAPI app in `src/api/app.py`
+- [X] T010 [US1] Wire route into FastAPI app in `src/api/app.py`
 
 **Checkpoint**: US1 fully functional and independently testable 🎯
 

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
+
+from src.agent import run_with_context
 
 
 class ToolCall(BaseModel):
@@ -30,3 +32,12 @@ class HealthResponse(BaseModel):
 
 
 router = APIRouter()
+
+
+@router.post("/query")
+async def handle_query(req: QueryRequest, request: Request):
+    agent = request.app.state.agent
+    result = run_with_context(agent, req.query)
+    if isinstance(result, str):
+        return QueryResponse(response=result)
+    return QueryResponse(response=result.content)
