@@ -194,6 +194,7 @@
     dom.form.dispatchEvent(new Event('submit'));
   });
 
+  dom.sendBtn.disabled = true;
   checkHealth();
   setInterval(checkHealth, 30000);
 

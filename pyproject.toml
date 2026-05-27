@@ -30,11 +30,16 @@ order-by-type = false
 [tool.pytest.ini_options]
 filterwarnings = [
     "ignore::RuntimeWarning:hpack.*",
+    "ignore::RuntimeWarning:openai.*",
+    "ignore::RuntimeWarning:pydantic.*",
+    "ignore::RuntimeWarning:playwright.*",
+    "ignore:coroutine 'to_thread' was never awaited",
 ]
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "playwright>=1.60.0",
     "pytest>=9.0.3",
     "pytest-mock>=3.15.1",
     "ruff>=0.15.14",

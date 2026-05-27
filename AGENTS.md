@@ -30,11 +30,13 @@
 - `tests/api/` — FastAPI endpoint tests (12 tests)
 - `specs/001-cli-agent-calculator/` — CLI spec
 - `specs/002-fastapi-agent-api/` — API spec
+- `specs/003-ui-chat-interface/` — Chat UI spec
+- `specs/004-end-to-end-tests/` — E2E tests spec
 
 ## Notes
 
 - Ruff config exists in `pyproject.toml` — line-length 79, isort known-first-party=src.
-- 44 tests total across 5 test files.
+- 61 tests total across 7 test files (unit + integration + api + e2e).
 - Git history with 12+ commits on `002-fastapi-agent-api` branch.
 
 <!-- SPECKIT START -->
@@ -43,4 +45,8 @@ Spec: specs/002-fastapi-agent-api/spec.md
 Data model: specs/002-fastapi-agent-api/data-model.md
 Quickstart: specs/002-fastapi-agent-api/quickstart.md
 Contracts: specs/002-fastapi-agent-api/contracts/
+
+Specs:
+- specs/003-ui-chat-interface/spec.md
+- specs/004-end-to-end-tests/spec.md
 <!-- SPECKIT END -->
