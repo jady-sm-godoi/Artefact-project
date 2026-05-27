@@ -10,3 +10,13 @@ wheels/
 .venv
 .env
 .opencode/
+
+# Ruff cache
+.ruff_cache/
+
+# Python version
+.python-version
+
+# Session databases
+sessions/
+*.db
