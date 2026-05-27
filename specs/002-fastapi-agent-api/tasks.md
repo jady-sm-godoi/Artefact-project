@@ -39,10 +39,10 @@ and testing.
 
 **CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create FastAPI app in `src/api/app.py` with lifespan
+- [X] T004 [P] Create FastAPI app in `src/api/app.py` with lifespan
       (agent init/shutdown), logging middleware (method, path, status,
       duration), and include router from routes
-- [ ] T005 Create Pydantic request/response schemas in `src/api/routes.py`:
+- [X] T005 Create Pydantic request/response schemas in `src/api/routes.py`:
       QueryRequest, QueryResponse, ToolCall, HealthResponse (per
       data-model.md and contracts/api-contracts.md)
 
