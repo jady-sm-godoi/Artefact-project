@@ -67,7 +67,7 @@ body{
   font-size:1.05rem;
   color:var(--text-primary);
 }
-.logo-icon{color:var(--accent)}
+.logo-icon{display:block;border-radius:6px}
 .status{
   display:flex;
   align-items:center;
@@ -110,7 +110,7 @@ body{
   padding:40px 20px;
   gap:16px;
 }
-.empty-icon{color:var(--text-muted);opacity:.5}
+.empty-icon{display:flex;align-items:center;justify-content:center}
 .empty-title{
   font-size:1.6rem;
   font-weight:600;
