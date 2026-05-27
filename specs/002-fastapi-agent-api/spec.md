@@ -8,6 +8,13 @@
 
 **Input**: User description: "Agora vamos construir uma api fastapi para se comunicar com o agente que você criou no spec 001."
 
+## Clarifications
+
+### Session 2026-05-27
+
+- Q: Error response format → A: FastAPI default `{"detail": "message"}`
+- Q: API observability → A: Request logging (method, path, status, duration) + `/health` endpoint
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Send query and receive response (Priority: P1)
@@ -106,8 +113,8 @@ verify the response includes tool call information.
 
 ### Edge Cases
 
-- **Invalid JSON payload**: API returns a 422 validation error with a clear
-  message about the malformed request.
+- **Invalid JSON payload**: API returns 422 with `{"detail": "<message>"}`
+  describing the malformed request.
 - **Query too long**: API enforces a maximum query length and returns a 413
   error if exceeded.
 - **Agent timeout**: If the agent takes too long to respond, the API returns a
@@ -128,8 +135,9 @@ verify the response includes tool call information.
   containing the agent's answer.
 - **FR-003**: System MUST expose a GET endpoint `/health` that returns service
   status.
-- **FR-004**: System MUST return 422 validation error for requests missing the
-  `query` field or with empty `query`.
+- **FR-004**: System MUST return 422 validation error with
+  `{"detail": "<message>"}` for requests missing the `query` field or with
+  empty `query`.
 - **FR-005**: System MUST support an optional `session_id` field in the
   request to maintain conversation context.
 - **FR-006**: System MUST support an optional `verbose` boolean field that
@@ -144,6 +152,8 @@ verify the response includes tool call information.
   for session state.
 - **FR-011**: System MUST return a 504 Gateway Timeout if agent response
   exceeds 30 seconds.
+- **FR-012**: System MUST log each request with method, path, status code,
+  and duration.
 
 ### Key Entities
 

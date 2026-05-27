@@ -26,9 +26,9 @@
 - No pre-commit hooks, task runner, or dev scripts.
 
 <!-- SPECKIT START -->
-Current plan: specs/001-cli-agent-calculator/plan.md
-Spec: specs/001-cli-agent-calculator/spec.md
-Data model: specs/001-cli-agent-calculator/data-model.md
-Quickstart: specs/001-cli-agent-calculator/quickstart.md
-Contracts: specs/001-cli-agent-calculator/contracts/
+Current plan: specs/002-fastapi-agent-api/plan.md
+Spec: specs/002-fastapi-agent-api/spec.md
+Data model: specs/002-fastapi-agent-api/data-model.md
+Quickstart: specs/002-fastapi-agent-api/quickstart.md
+Contracts: specs/002-fastapi-agent-api/contracts/
 <!-- SPECKIT END -->
