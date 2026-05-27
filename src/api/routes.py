@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import asyncio
 from typing import Dict, List, Optional
 
 from agno.agent import Agent
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from src.agent import create_agent, run_with_context
@@ -17,7 +18,7 @@ class ToolCall(BaseModel):
 
 
 class QueryRequest(BaseModel):
-    query: str = Field(..., min_length=1, max_length=10000)
+    query: str = Field(..., min_length=1)
     session_id: Optional[str] = None
     verbose: bool = False
 
@@ -64,6 +65,8 @@ def _build_tool_calls(result) -> List[ToolCall]:
 
 @router.post("/query")
 async def handle_query(req: QueryRequest, request: Request):
+    if len(req.query) > 10000:
+        raise HTTPException(status_code=413, detail="Query too long")
     if req.session_id:
         if req.session_id not in _sessions:
             _sessions[req.session_id] = create_agent(
@@ -72,7 +75,15 @@ async def handle_query(req: QueryRequest, request: Request):
         agent = _sessions[req.session_id]
     else:
         agent = request.app.state.agent
-    result = run_with_context(agent, req.query)
+    try:
+        result = await asyncio.wait_for(
+            asyncio.to_thread(run_with_context, agent, req.query),
+            timeout=30.0,
+        )
+    except asyncio.TimeoutError:
+        raise HTTPException(
+            status_code=504, detail="Agent response timeout"
+        )
     if isinstance(result, str):
         return QueryResponse(response=result)
     content = result.content

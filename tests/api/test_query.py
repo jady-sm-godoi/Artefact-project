@@ -1,3 +1,4 @@
+import asyncio
 from unittest import mock
 
 import pytest
@@ -176,3 +177,19 @@ class TestQueryEndpoint:
         resp = client.post("/query", json={"query": ""})
 
         assert resp.status_code == 422
+
+    def test_query_too_long_returns_413(self, client):
+        long_query = "x" * 10001
+        resp = client.post("/query", json={"query": long_query})
+        assert resp.status_code == 413
+        assert "too long" in resp.json()["detail"].lower()
+
+    def test_agent_timeout_returns_504(self, client):
+        with mock.patch(
+            "src.api.routes.asyncio.wait_for",
+            mock.AsyncMock(side_effect=asyncio.TimeoutError()),
+        ):
+            resp = client.post("/query", json={"query": "hello"})
+
+        assert resp.status_code == 504
+        assert "timeout" in resp.json()["detail"].lower()

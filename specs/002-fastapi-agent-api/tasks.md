@@ -159,13 +159,13 @@ response includes tool_calls array.
 
 **Purpose**: Quality and edge-case hardening
 
-- [ ] T022 [P] Add max query length validation (10k chars) in POST /query
+- [X] T022 [P] Add max query length validation (10k chars) in POST /query
       in `src/api/routes.py`
-- [ ] T023 [P] Add agent timeout handling (504 Gateway Timeout after 30s)
+- [X] T023 [P] Add agent timeout handling (504 Gateway Timeout after 30s)
       in `src/api/routes.py`
-- [ ] T024 Run `ruff check .` and fix any lint issues
-- [ ] T025 Run `uv run pytest tests/api/` and verify all tests pass
-- [ ] T026 [P] Run quickstart.md validation — verify server starts and
+- [X] T024 Run `ruff check .` and fix any lint issues
+- [X] T025 Run `uv run pytest tests/api/` and verify all tests pass
+- [X] T026 [P] Run quickstart.md validation — verify server starts and
       curl examples work
 
 ---
