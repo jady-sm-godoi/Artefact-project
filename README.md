@@ -147,6 +147,17 @@ Prazer, Jady!
 Seu nome é Jady! ← carregou da sessão anterior no SQLite
 ```
 
+> **Nota sobre sessões na API FastAPI** (`specs/002-fastapi-agent-api`):
+> A API combina duas camadas de sessão:
+> 1. **Dict em memória** (`_sessions` em `src/api/routes.py`) — cache de
+>    objetos `Agent` para evitar recriar o cliente OpenAI a cada request.
+> 2. **SQLite** (`sessions/agent.db`) — persistência real do histórico de
+>    mensagens, gerenciada pelo Agno Agent via `session_id`.
+>
+> O dict não substitui o SQLite. Se o servidor reiniciar, o dict é perdido,
+> mas o histórico no SQLite permanece. Um novo `Agent(session_id="X")`
+> recria o cliente e carrega o histórico do banco.
+
 Expressões puras roteadas diretamente para a calculadora (sem passar
 pelo LLM) não persistem no banco — é um trade-off consciente para
 economizar tokens de API.

@@ -114,16 +114,15 @@ with same session_id — verify context preserved.
 
 ### Tests for User Story 3
 
-- [ ] T014 [P] [US3] Test follow-up query with same session_id maintains
+- [X] T014 [P] [US3] Test follow-up query with same session_id maintains
       context in `tests/api/test_query.py`
-- [ ] T015 [P] [US3] Test new session_id creates new session automatically
+- [X] T015 [P] [US3] Test new session_id creates new session automatically
       in `tests/api/test_query.py`
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Add in-memory session storage dict in `src/api/app.py`
-      (lifespan)
-- [ ] T017 [US3] Implement session_id lookup/create logic in POST /query
+- [X] T016 [US3] Add in-memory session storage dict in `src/api/routes.py`
+- [X] T017 [US3] Implement session_id lookup/create logic in POST /query
       in `src/api/routes.py`
 
 **Checkpoint**: US3 independently functional — conversation context works
