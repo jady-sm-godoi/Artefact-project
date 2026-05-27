@@ -71,6 +71,83 @@ class TestSession:
             mock_create.assert_called_once_with(session_id="fresh-session")
 
 
+class TestVerbose:
+    def test_verbose_true_includes_tool_calls(self, client):
+        with mock.patch("src.api.routes.run_with_context") as mock_run:
+            tool = mock.MagicMock()
+            tool.tool_name = "calculator"
+            tool.tool_args = {"expression": "128 * 46"}
+            tool.result = "5888"
+            tool.metrics = mock.MagicMock()
+            tool.metrics.duration = 0.012
+
+            mock_run.return_value = FakeRunOutput(
+                content="5888",
+                messages=[mock.MagicMock()],
+                tools=[tool],
+            )
+            resp = client.post(
+                "/query",
+                json={"query": "128 * 46", "verbose": True},
+            )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["response"] == "5888"
+        assert data["tool_calls"] == [
+            {
+                "tool_name": "calculator",
+                "input": "128 * 46",
+                "output": "5888",
+                "duration_ms": 12,
+            }
+        ]
+
+    def test_verbose_false_omits_tool_calls(self, client):
+        with mock.patch("src.api.routes.run_with_context") as mock_run:
+            tool = mock.MagicMock()
+            tool.tool_name = "calculator"
+            tool.tool_args = {"expression": "128 * 46"}
+            tool.result = "5888"
+            tool.metrics = mock.MagicMock()
+            tool.metrics.duration = 0.012
+
+            mock_run.return_value = FakeRunOutput(
+                content="5888",
+                messages=[mock.MagicMock()],
+                tools=[tool],
+            )
+            resp = client.post(
+                "/query",
+                json={"query": "128 * 46"},
+            )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["response"] == "5888"
+        assert data.get("tool_calls") is None
+
+    def test_verbose_true_omits_tool_calls_when_no_tools_used(self, client):
+        with mock.patch("src.api.routes.run_with_context") as mock_run:
+            mock_run.return_value = FakeRunOutput(
+                content="Paris",
+                messages=[mock.MagicMock()],
+                tools=None,
+            )
+            resp = client.post(
+                "/query",
+                json={
+                    "query": "What is the capital of France?",
+                    "verbose": True,
+                },
+            )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["response"] == "Paris"
+        assert data.get("tool_calls") is None
+
+
 class TestQueryEndpoint:
     def test_factual_question_returns_paris(self, client):
         with mock.patch("src.api.routes.run_with_context") as mock_run:

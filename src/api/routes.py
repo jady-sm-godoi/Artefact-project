@@ -36,6 +36,32 @@ router = APIRouter()
 _sessions: Dict[str, Agent] = {}
 
 
+def _build_tool_calls(result) -> List[ToolCall]:
+    """Adapter: traduz ToolExecution (Agno) → ToolCall (contrato público)
+    isola consumidor da API de detalhes internos do framework.
+    Normaliza duration s→ms, desaninha expression de tool_args."""
+    tools = getattr(result, "tools", None)
+    if not tools:
+        return []
+    calls: List[ToolCall] = []
+    for t in tools:
+        expr = ""
+        if t.tool_args:
+            expr = t.tool_args.get("expression", "")
+        duration_ms = 0
+        if t.metrics and t.metrics.duration is not None:
+            duration_ms = round(t.metrics.duration * 1000)
+        calls.append(
+            ToolCall(
+                tool_name=t.tool_name or "",
+                input=expr,
+                output=t.result or "",
+                duration_ms=duration_ms,
+            )
+        )
+    return calls
+
+
 @router.post("/query")
 async def handle_query(req: QueryRequest, request: Request):
     if req.session_id:
@@ -49,7 +75,11 @@ async def handle_query(req: QueryRequest, request: Request):
     result = run_with_context(agent, req.query)
     if isinstance(result, str):
         return QueryResponse(response=result)
-    return QueryResponse(response=result.content)
+    content = result.content
+    if req.verbose:
+        calls = _build_tool_calls(result)
+        return QueryResponse(response=content, tool_calls=calls or None)
+    return QueryResponse(response=content)
 
 
 @router.get("/health")

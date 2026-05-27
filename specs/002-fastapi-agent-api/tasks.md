@@ -139,16 +139,16 @@ response includes tool_calls array.
 
 ### Tests for User Story 4
 
-- [ ] T018 [P] [US4] Test verbose=true includes tool_calls in response in
+- [X] T018 [P] [US4] Test verbose=true includes tool_calls in response in
       `tests/api/test_query.py`
-- [ ] T019 [P] [US4] Test verbose=false (default) omits tool_calls in
+- [X] T019 [P] [US4] Test verbose=false (default) omits tool_calls in
       `tests/api/test_query.py`
 
 ### Implementation for User Story 4
 
-- [ ] T020 [US4] Capture tool call details from agent response in POST /query
+- [X] T020 [US4] Capture tool call details from agent response in POST /query
       in `src/api/routes.py`
-- [ ] T021 [US4] Include tool_calls in QueryResponse when verbose=true in
+- [X] T021 [US4] Include tool_calls in QueryResponse when verbose=true in
       `src/api/routes.py`
 
 **Checkpoint**: All user stories independently functional
