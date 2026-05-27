@@ -70,7 +70,71 @@ Comandos dentro do CLI:
 ### 5. Rodar testes
 
 ```bash
+# Todos os testes (CLI + API)
 uv run pytest tests/ -v
+
+# Apenas API
+uv run pytest tests/api/ -v
+
+# Apenas CLI
+uv run pytest tests/unit/ tests/integration/ -v
+```
+
+---
+
+## FastAPI REST API (`specs/002-fastapi-agent-api`)
+
+API REST que expõe o agente via HTTP.
+
+### Executar
+
+```bash
+# Servidor dev com auto-reload
+uv run uvicorn src.api.app:app --reload --port 8000
+
+# Produção
+uv run uvicorn src.api.app:app --host 0.0.0.0 --port 8000
+```
+
+### Endpoints
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/query` | Envia pergunta ao agente |
+| GET | `/health` | Status do serviço |
+| GET | `/docs` | Swagger UI interativo |
+
+### POST /query
+
+Body:
+
+```json
+{"query": "128 * 46", "session_id": "abc-123", "verbose": true}
+```
+
+| Campo | Tipo | Obrigatório | Descrição |
+|-------|------|-------------|-----------|
+| `query` | string | sim | Pergunta ou expressão (1–10000 chars) |
+| `session_id` | string | não | ID para conversa multi-turn |
+| `verbose` | boolean | não | Incluir detalhes de ferramentas |
+
+Respostas:
+- **200**: `{"response": "5888", "tool_calls": [...]}` (tool_calls apenas se verbose)
+- **413**: Query > 10000 chars
+- **422**: Query vazia ou payload inválido
+- **504**: Timeout do agente (> 30s)
+
+### GET /health
+
+```bash
+curl http://localhost:8000/health
+# → {"status": "ok", "mode": "full"}
+```
+
+### Rodar testes da API
+
+```bash
+uv run pytest tests/api/ -v
 ```
 
 ---
@@ -191,6 +255,10 @@ puras roteadas diretamente.
 src/
 ├── agent.py           # Criação do Agno Agent, roteamento, contexto
 ├── cli.py             # REPL loop, entrada/saída, --verbose
+├── api/
+│   ├── __init__.py
+│   ├── app.py         # FastAPI app, lifespan, logging middleware
+│   └── routes.py      # /query e /health endpoints
 ├── tools/
 │   └── calculator.py  # Tool SymPy para Agno + função evaluate()
 
@@ -198,16 +266,18 @@ tests/
 ├── unit/
 │   ├── test_agent.py       # Testes de roteamento, contexto, ambiguidade
 │   └── test_calculator.py  # Testes de aritmética, simbólica, erros
-└── integration/
-    └── test_cli.py    # Testes de fluxo completo via stdin/stdout mockado
+├── integration/
+│   └── test_cli.py    # Testes de fluxo completo via stdin/stdout mockado
+└── api/
+    ├── test_query.py  # Testes do endpoint /query (10 testes)
+    └── test_health.py # Testes do endpoint /health (2 testes)
 ```
 
 ---
 
-## Especificação completa
+## Especificações
 
-Documentos de design e planejamento em
-[specs/001-cli-agent-calculator/](specs/001-cli-agent-calculator/):
+### CLI Agent (`specs/001-cli-agent-calculator/`)
 
 | Documento | Conteúdo |
 |-----------|----------|
@@ -218,3 +288,15 @@ Documentos de design e planejamento em
 | `contracts/` | CLI Interface e Calculator Tool contracts |
 | `quickstart.md` | Guia rápido de setup e uso |
 | `research.md` | Decisões técnicas e alternativas |
+
+### FastAPI API (`specs/002-fastapi-agent-api/`)
+
+| Documento | Conteúdo |
+|-----------|----------|
+| `spec.md` | User stories, FRs, edge cases |
+| `plan.md` | Stack, estrutura, fases de implementação |
+| `tasks.md` | 26 tarefas em 7 fases, todas concluídas |
+| `data-model.md` | Entidades: QueryRequest, Session, ToolCall |
+| `contracts/` | API Contracts (query, health) |
+| `quickstart.md` | Guia rápido de execução |
+| `research.md` | Decisões técnicas |
