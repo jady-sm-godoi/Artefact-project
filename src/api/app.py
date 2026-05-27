@@ -4,9 +4,12 @@ import logging
 import time
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from src.agent import create_agent
 from src.api.routes import router
@@ -14,6 +17,8 @@ from src.api.routes import router
 load_dotenv()
 
 logger = logging.getLogger("artefact-api")
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
@@ -46,6 +51,14 @@ async def log_requests(request: Request, call_next):
         duration * 1000,
     )
     return response
+
+
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse(str(STATIC_DIR / "index.html"))
 
 
 app.include_router(router)
