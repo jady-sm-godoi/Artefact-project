@@ -6,11 +6,41 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "agno>=2.6.9",
+    "fastapi>=0.136.3",
+    "groq>=1.2.0",
     "openai>=2.38.0",
+    "sqlalchemy>=2.0.50",
     "sympy>=1.14.0",
+    "uvicorn>=0.48.0",
+]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+order-by-type = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::RuntimeWarning:hpack.*",
+    "ignore::RuntimeWarning:openai.*",
+    "ignore::RuntimeWarning:pydantic.*",
+    "ignore::RuntimeWarning:playwright.*",
+    "ignore:coroutine 'to_thread' was never awaited",
 ]
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
+    "playwright>=1.60.0",
+    "pytest>=9.0.3",
+    "pytest-mock>=3.15.1",
     "ruff>=0.15.14",
 ]

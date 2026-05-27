@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Artefact Agent</title>
+<link rel="icon" type="image/webp" href="/static/logo-icon.webp">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+  <header id="header">
+    <div class="header-inner">
+      <div class="brand">
+        <img class="logo-icon" src="/static/logo-icon.webp" width="24" height="24" alt="Artefact">
+        <span class="logo-text">Artefact</span>
+      </div>
+      <div class="status" id="healthStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">verificando...</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="chat">
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">
+        <img src="/static/logo.webp" width="64" height="64" alt="Artefact">
+      </div>
+      <h1 class="empty-title">Artefact Agent</h1>
+      <p class="empty-subtitle">Calculadora inteligente com IA. Faça perguntas, resolva expressões matemáticas ou peça explicações.</p>
+      <div class="suggestions" id="suggestions">
+        <button class="suggestion-btn" data-query="128 * 46">128 × 46</button>
+        <button class="suggestion-btn" data-query="What is the capital of France?">Capital da França</button>
+        <button class="suggestion-btn" data-query="simplify(sin(x)^2 + cos(x)^2)">Simplify sin²x + cos²x</button>
+      </div>
+    </div>
+
+    <div id="messages" class="messages" aria-live="polite"></div>
+  </main>
+
+  <div id="loadingIndicator" class="loading-indicator hidden">
+    <div class="typing-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <footer id="footer">
+    <form id="inputForm" class="input-form" autocomplete="off">
+      <div class="input-wrapper">
+        <textarea
+          id="userInput"
+          class="user-input"
+          placeholder="Pergunte algo ao Artefact Agent..."
+          rows="1"
+          aria-label="Mensagem"
+        ></textarea>
+        <button type="submit" id="sendBtn" class="send-btn" aria-label="Enviar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <p class="disclaimer">O Artefact Agent pode cometer erros. Verifique informações importantes.</p>
+    </form>
+  </footer>
+</div>
+
+<div id="errorToast" class="toast hidden" role="alert">
+  <span id="errorMessage"></span>
+  <button class="toast-close" aria-label="Fechar">&times;</button>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
